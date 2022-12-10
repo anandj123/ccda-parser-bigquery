@@ -4,7 +4,7 @@
   "description": "This is WIP project that uses blue-button module to ingest CCDA files into BigQuery.",
   "main": "ccda-parse.js",
   "dependencies": {
-    "blue-button": "^1.10.2"
+    "bluebutton": "^0.4.2"
   },
   "devDependencies": {},
   "scripts": {
