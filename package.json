@@ -1,0 +1,23 @@
+{
+  "name": "ccda-parser",
+  "version": "1.0.0",
+  "description": "This is WIP project that uses blue-button module to ingest CCDA files into BigQuery.",
+  "main": "ccda-parse.js",
+  "dependencies": {
+    "bluebutton": "^0.4.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/googlestaging/ccda-parser.git"
+  },
+  "author": "Google",
+  "license": "Apache-2.0",
+  "bugs": {
+    "url": "https://github.com/googlestaging/ccda-parser/issues"
+  },
+  "homepage": "https://github.com/googlestaging/ccda-parser#readme"
+}
