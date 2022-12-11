@@ -105,12 +105,13 @@ def parse():
 
     if not table_exist:
         try:
-            print('Table not found, creating table')
+            print('Table ' + table_id + ' not found, creating table')
             schema_file = open('schema.json','r')
     
             #read whole file to a string
             schema = schema_file.read()
-    
+            print("Schema: " + schema)
+            
             #close file
             schema_file.close()
 
