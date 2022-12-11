@@ -110,13 +110,13 @@ def parse():
     
             #read whole file to a string
             schema = schema_file.read()
-            print("Schema: " + schema)
-            
+
             #close file
             schema_file.close()
 
             table = bigquery.Table(table_id, schema=schema)
             table = bigquery_client.create_table(table)  # Make an API request.
+
             print("Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id))
         except:
             print("Error cannot create BigQuery table, exiting.")
