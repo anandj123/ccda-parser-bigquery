@@ -166,7 +166,7 @@ def parse():
             except:
                 print("{:<30}".format("Error during processing") + 
                         Fore.RED + 
-                        blob.name + '\n')
+                        blob.name + '\n' + load_job.errors)
                 
 
     print("Finished processing. Summary statistics")
