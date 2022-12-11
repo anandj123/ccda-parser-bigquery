@@ -4,3 +4,6 @@ bq mk anand-bq-test-2:hca_clinical.ccda-golden schema.json
 python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/Clinical/HCA -bq_location anand-bq-test-2.hca_clinical.ccda-golden
 
 python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/Clinical/cerner -bq_location anand-bq-test-2.hca_clinical.ccda-golden
+
+gsutil cp test-data/* gs://anand-bq-test-2/HCA_TEST/Clinical/cerner/
+
