@@ -124,8 +124,8 @@ def parse():
 
                 if p.returncode != 0:
                     print(error)
-                    raise ValueError("Failed to parse clinical XML at %s" %
-                                    path_to_file)
+                    print("Failed to parse clinical XML at %s" % blob.name)
+                    continue                
 
                 result = result.decode('utf-8').replace("\n", "")
 
