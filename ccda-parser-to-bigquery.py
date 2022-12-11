@@ -101,7 +101,7 @@ def parse():
         job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     except:
         print('Table not found, creating table')
-        
+
     total_files_processed = 0
     for blob in all_blobs:
 
@@ -139,6 +139,9 @@ def parse():
                                                 table, 
                                                 job_config=job_config)
 
+                if load_job.errors != None:
+                    print( "Load to BigQuery failed. \n" + load_job.errors)
+                
                 print("{:<30}".format("Loading to BigQuery job_id") + 
                         Fore.GREEN + 
                         load_job.job_id + '\n')
