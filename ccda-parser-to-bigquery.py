@@ -91,14 +91,17 @@ def parse():
     delimiter = None
     all_blobs = bucket.list_blobs(prefix=folder_name, delimiter=delimiter)
 
-    # Note: The call returns a response only when the iterator is consumed.
-    bigquery_client = bigquery.Client(project=project_id)
-    dataset_ref = bigquery_client.dataset(data_set_id)
-    table_ref = dataset_ref.table(table_id)
-    table = bigquery_client.get_table(table_ref)  # API call
-    job_config = bigquery.LoadJobConfig()
-    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
-    
+    try:
+        # Note: The call returns a response only when the iterator is consumed.
+        bigquery_client = bigquery.Client(project=project_id)
+        dataset_ref = bigquery_client.dataset(data_set_id)
+        table_ref = dataset_ref.table(table_id)
+        table = bigquery_client.get_table(table_ref)  # API call
+        job_config = bigquery.LoadJobConfig()
+        job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
+    except:
+        print('Table not found, creating table')
+        
     total_files_processed = 0
     for blob in all_blobs:
 
