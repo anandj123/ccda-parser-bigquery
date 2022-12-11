@@ -21,10 +21,8 @@ import json
 import re
 import argparse
 import time
-from colorama import Fore, Back, Style, init
 from google.cloud import storage
 
-init(autoreset=True)
 
 gcs_location = ''
 bq_location = ''
@@ -54,27 +52,23 @@ def load_params():
     print()
     print('-'*60)
     if (not gcs_location.startswith("gs://")):
-        print("GCS location for CCDA files: " + Fore.RED + gcs_location)
-        print("Please provide GCS location as " + Fore.GREEN + "gs://bucket/folder/")
+        print("GCS location for CCDA files: " + gcs_location)
+        print("Please provide GCS location as "  + "gs://bucket/folder/")
         valid = False
     
     bq = bq_location.split('.')
     if (len(bq)<3):
         print()
-        print("BQ location for CCDA files: " + Fore.RED + bq_location)
-        print('Please provide BQ location as ' + Fore.GREEN + 'project.dataset.table')
+        print("BQ location for CCDA files: "  + bq_location)
+        print('Please provide BQ location as '  + 'project.dataset.table')
         valid = False
     if (not valid):
         exit()
-    print("{:<30}".format("Processing CCDA files from ") + Fore.GREEN + gcs_location)
-    print("{:<30}".format("Loading to ") + Fore.GREEN + bq_location)
+    print("Processing CCDA files from GCS location: {}".format(gcs_location))
+    print("BigQuery destination table: {}".format(bq_location))
 
 def parse():
-    print()
-    print("Start processing CCDA documents ... ")
-    print('-'*60)
     bq = bq_location.split('.')
-
     project_id = bq[0]
     data_set_id = bq[1]
     table_id = bq[2]
@@ -118,22 +112,27 @@ def parse():
     job_config = bigquery.LoadJobConfig()
     job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
 
-    total_files_processed = 0
+    total_success_files = 0
+    total_error_files = 0
     for blob in all_blobs:
 
+        # Ignore files that are in /done folder
         if (blob.name.startswith(folder_name+"/done/")):
             continue
-
+        
+        # Process files if they are of .XML extension
         if blob.name.endswith('.xml'):
-            print("{:<30}".format("Parsing CCDA XML file") + Fore.GREEN + blob.name)
-            destination_uri = "{}/{}".format('.', "current.xml")
+            print("Parsing CCDA XML file: {}".format(blob.name))
+
+            # Download XML to current local location for Node to process
+            path_to_file = 'current.xml'
+            destination_uri = "{}/{}".format('.', path_to_file)
             blob.download_to_filename(destination_uri)
 
-            path_to_file = 'current.xml'
             try:
                 # if node isn't on your path, the first arg should instead be a path to the node bin
                 cmd_list = ['node', 'ccda-parse.js', path_to_file]
-
+                # Call node subprocess to parse the CCDA file
                 p = subprocess.Popen(cmd_list, 
                                     stdout=subprocess.PIPE,
                                     stdin=subprocess.PIPE, 
@@ -141,26 +140,25 @@ def parse():
                 result, error = p.communicate()
                 p.stdin.close()
 
+                # Error during parsing, print the error message and continue
                 if p.returncode != 0:
                     print(error.decode('UTF-8'))
                     print("Failed to parse clinical XML at %s" % blob.name)
+                    total_error_files = total_error_files + 1
                     continue                
-
+                
+                # Create a Load job to load data to BigQuery
                 result = result.decode('utf-8').replace("\n", "")
-
                 stringio_data = io.StringIO(result)
-
                 load_job = bigquery_client.load_table_from_file(
                                                 stringio_data, 
                                                 table, 
                                                 job_config=job_config)
 
                 if load_job.errors != None:
-                    print( "Load to BigQuery failed. \n" + load_job.errors)
-                
-                print("{:<30}".format("Loading to BigQuery job_id") + 
-                        Fore.GREEN + 
-                        load_job.job_id + '\n')
+                    print( "Load to BigQuery failed: {}".format(load_job.errors))
+                    total_error_files = total_error_files + 1
+                    continue
                 
                 # Wait till the BigQuery job is finished 
                 while True:
@@ -172,22 +170,19 @@ def parse():
 
                 # If BigQuery job failed, print error message    
                 if load_job.errors != None:
-                    print( "Load to BigQuery failed. \n" + load_job.errors)
+                    print("Load to BigQuery failed: {}".format(load_job.errors))
+                    total_error_files = total_error_files + 1
+                    continue
                 else: 
                     # move the file to DONE folder so that it is not processed again
-                    print( "Job finished state {}".format( load_job.state ) )
+                    print("Job {} state {}".format(load_job.job_id, load_job.state) )
                     bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
-                    
-                total_files_processed = total_files_processed + 1
+                    total_success_files = total_success_files + 1
             except :
-                print("{:<30}".format("Error during processing") + 
-                        Fore.RED + 
-                        blob.name + '\n' )
+                print("Error during processing: {}".format(blob.name ))
                 
 
-    print("Finished processing. Summary statistics")
-    print('-'*60)
-    print("{:<30}".format("Total CCDA files parsed") + Fore.GREEN + str(total_files_processed))
+    print("Total CCDA files parsed with SUCCESS: {} with ERRORS: {}".format(str(total_success_files,total_error_files)))
 
 if __name__ == '__main__':
     load_params()

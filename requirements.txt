@@ -1,3 +1,2 @@
-colorama
 google-cloud-bigquery
 google-cloud-storage
