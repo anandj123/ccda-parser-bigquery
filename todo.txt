@@ -5,5 +5,5 @@ python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/C
 
 git pull && python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/Clinical/cerner -bq_location anand-bq-test-2.hca_clinical.ccda-golden
 
-gsutil cp test-data/* gs://anand-bq-test-2/HCA_TEST/Clinical/cerner/
+gsutil cp -m test-data/* gs://anand-bq-test-2/HCA_TEST/Clinical/cerner/
 
