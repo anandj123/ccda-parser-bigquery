@@ -29,7 +29,7 @@ init(autoreset=True)
 gcs_location = ''
 bq_location = ''
 
-def main():
+def load_params():
     parser = argparse.ArgumentParser(description= \
         '''This application downloads CCDA files from GCS, 
         parses them using bluebutton.js library
@@ -135,21 +135,26 @@ def parse():
                                                 stringio_data, 
                                                 table, 
                                                 job_config=job_config)
+
                 print("{:<30}".format("Loading to BigQuery job_id") + 
                         Fore.GREEN + 
                         load_job.job_id + '\n')
                 
+                # Wait till the BigQuery job is finished 
                 while True:
                     load_job = bigquery_client.get_job( load_job.job_id )  # API request - fetches job
                     if load_job.state != "RUNNING":
                         break
                     print( "Job {} is currently in state {}".format( load_job.job_id, load_job.state ) )
                     time.sleep( 5 )
+
+                # If BigQuery job failed, print error message    
                 if load_job.errors != None:
-                    print( "Query Failed." )
-                else:
-                    bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
+                    print( "Load to BigQuery failed. \n" + load_job.errors)
+                else: 
+                    # move the file to DONE folder so that it is not processed again
                     print( "Job finished state {}".format( load_job.state ) )
+                    bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
                     
                 total_files_processed = total_files_processed + 1
             except:
@@ -163,6 +168,6 @@ def parse():
     print("{:<30}".format("Total CCDA files parsed") + Fore.GREEN + str(total_files_processed))
 
 if __name__ == '__main__':
-    main()
+    load_params()
     parse()
 # [END ccda_parser_to_bigquery]
