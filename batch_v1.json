@@ -28,9 +28,16 @@
         "instances": [
             {
                 "policy": {
-                    "machineType": "e2-standard-1"
+                    "machineType": "e2-medium"
                 }
             }
         ]
+    },
+    "labels": {
+        "department": "google",
+        "env": "testing"
+    },
+    "logsPolicy": {
+        "destination": "CLOUD_LOGGING"
     }
 }
