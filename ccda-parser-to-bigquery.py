@@ -107,19 +107,10 @@ def parse():
         try:
             table_id = "{}.{}.{}".format(project_id,data_set_id,table_id)
             print('Table ' + table_id + ' not found, creating table')
-            #schema_file = open('schema.json','r')
-    
-            #read whole file to a string
             schema = bigquery_client.schema_from_json('schema.json')
-
-            #close file
-            #schema_file.close()
-
             table = bigquery.Table(table_ref, schema=schema)
-
-            table2 = bigquery_client.create_table(table)  # Make an API request.
-
-            print("Created table {}.{}.{}".format(table2.project, table2.dataset_id, table2.table_id))
+            table = bigquery_client.create_table(table)  # Make an API request.
+            print("Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id))
         except:
             print("Error cannot create BigQuery table, exiting.")
             exit(0)
