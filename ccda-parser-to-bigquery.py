@@ -182,7 +182,7 @@ def parse():
                 print("Error during processing: {}".format(blob.name ))
                 
 
-    print("Total CCDA files parsed with SUCCESS: {} with ERRORS: {}".format(str(total_success_files,total_error_files)))
+    print("Total CCDA files parsed with SUCCESS: {} with ERRORS: {}".format(total_success_files,total_error_files))
 
 if __name__ == '__main__':
     load_params()
