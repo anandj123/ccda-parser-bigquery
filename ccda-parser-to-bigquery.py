@@ -141,6 +141,7 @@ def parse():
             if load_job.errors != None:
                 print( "Query Failed." )
             else:
+                bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
                 print( "Job finished state {}".format( load_job.state ) )
                 
             print("{:<30}".format("Loading to BigQuery job_id") + 
