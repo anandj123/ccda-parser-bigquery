@@ -107,13 +107,13 @@ def parse():
         try:
             table_id = "{}.{}.{}".format(project_id,data_set_id,table_id)
             print('Table ' + table_id + ' not found, creating table')
-            schema_file = open('schema.json','r')
+            #schema_file = open('schema.json','r')
     
             #read whole file to a string
-            schema = schema_file.read()
+            schema = bigquery_client.schema_from_json('schema.json')
 
             #close file
-            schema_file.close()
+            #schema_file.close()
 
             table = bigquery.Table(table_ref, schema=schema)
 
