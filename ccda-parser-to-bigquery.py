@@ -123,7 +123,7 @@ def parse():
                 p.stdin.close()
 
                 if p.returncode != 0:
-                    print(error)
+                    print(error.decode('UTF-8'))
                     print("Failed to parse clinical XML at %s" % blob.name)
                     continue                
 
