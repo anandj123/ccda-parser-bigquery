@@ -20,6 +20,7 @@ import io
 import json
 import re
 import argparse
+import time
 from colorama import Fore, Back, Style, init
 from google.cloud import storage
 
@@ -131,6 +132,13 @@ def parse():
                                             table, 
                                             job_config=job_config)
             
+            while True:
+                load_job = bigquery_client.get_job( load_job.job_id )  # API request - fetches job
+                if load_job.state != "RUNNING":
+                    break
+                print( "Job {} is currently in state {}".format( load_job.job_id, load_job.state ) )
+                time.sleep( 5 )
+        
             print("{:<30}".format("Loading to BigQuery job_id") + 
                     Fore.GREEN + 
                     load_job.job_id + '\n')
