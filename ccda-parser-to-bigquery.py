@@ -101,7 +101,7 @@ def parse():
     
     total_files_processed = 0
     for blob in all_blobs:
-        
+
         if (blob.name.startswith(folder_name+"/done/")):
             continue
 
@@ -111,46 +111,52 @@ def parse():
             blob.download_to_filename(destination_uri)
 
             path_to_file = 'current.xml'
-            # if node isn't on your path, the first arg should instead be a path to the node bin
-            cmd_list = ['node', 'ccda-parse.js', path_to_file]
+            try:
+                # if node isn't on your path, the first arg should instead be a path to the node bin
+                cmd_list = ['node', 'ccda-parse.js', path_to_file]
 
-            p = subprocess.Popen(cmd_list, 
-                                stdout=subprocess.PIPE,
-                                stdin=subprocess.PIPE, 
-                                stderr=subprocess.PIPE)
-            result, error = p.communicate()
-            p.stdin.close()
+                p = subprocess.Popen(cmd_list, 
+                                    stdout=subprocess.PIPE,
+                                    stdin=subprocess.PIPE, 
+                                    stderr=subprocess.PIPE)
+                result, error = p.communicate()
+                p.stdin.close()
 
-            if p.returncode != 0:
-                print(error)
-                raise ValueError("Failed to parse clinical XML at %s" %
-                                path_to_file)
+                if p.returncode != 0:
+                    print(error)
+                    raise ValueError("Failed to parse clinical XML at %s" %
+                                    path_to_file)
 
-            result = result.decode('utf-8').replace("\n", "")
+                result = result.decode('utf-8').replace("\n", "")
 
-            stringio_data = io.StringIO(result)
+                stringio_data = io.StringIO(result)
 
-            load_job = bigquery_client.load_table_from_file(
-                                            stringio_data, 
-                                            table, 
-                                            job_config=job_config)
-            
-            while True:
-                load_job = bigquery_client.get_job( load_job.job_id )  # API request - fetches job
-                if load_job.state != "RUNNING":
-                    break
-                print( "Job {} is currently in state {}".format( load_job.job_id, load_job.state ) )
-                time.sleep( 5 )
-            if load_job.errors != None:
-                print( "Query Failed." )
-            else:
-                bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
-                print( "Job finished state {}".format( load_job.state ) )
+                load_job = bigquery_client.load_table_from_file(
+                                                stringio_data, 
+                                                table, 
+                                                job_config=job_config)
+                print("{:<30}".format("Loading to BigQuery job_id") + 
+                        Fore.GREEN + 
+                        load_job.job_id + '\n')
                 
-            print("{:<30}".format("Loading to BigQuery job_id") + 
-                    Fore.GREEN + 
-                    load_job.job_id + '\n')
-            total_files_processed = total_files_processed + 1
+                while True:
+                    load_job = bigquery_client.get_job( load_job.job_id )  # API request - fetches job
+                    if load_job.state != "RUNNING":
+                        break
+                    print( "Job {} is currently in state {}".format( load_job.job_id, load_job.state ) )
+                    time.sleep( 5 )
+                if load_job.errors != None:
+                    print( "Query Failed." )
+                else:
+                    bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
+                    print( "Job finished state {}".format( load_job.state ) )
+                    
+                total_files_processed = total_files_processed + 1
+            except:
+                print("{:<30}".format("Error during processing") + 
+                        Fore.RED + 
+                        blob.name + '\n')
+                
 
     print("Finished processing. Summary statistics")
     print('-'*60)
