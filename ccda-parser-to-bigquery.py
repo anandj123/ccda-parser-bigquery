@@ -105,7 +105,7 @@ def parse():
 
     if not table_exist:
         try:
-            print('Table ' + table_id + ' not found, creating table')
+            print('Table ' + table_ref + ' not found, creating table')
             schema_file = open('schema.json','r')
     
             #read whole file to a string
@@ -114,7 +114,7 @@ def parse():
             #close file
             schema_file.close()
 
-            table = bigquery.Table(table_id, schema=schema)
+            table = bigquery.Table(table_ref, schema=schema)
             table = bigquery_client.create_table(table)  # Make an API request.
 
             print("Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id))
