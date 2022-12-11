@@ -101,6 +101,8 @@ def parse():
     
     total_files_processed = 0
     for blob in all_blobs:
+        if (blob.name.startswith(folder_name+"/done/")):
+            continue
         print("\n\n processing: " + blob.name + "\n\n\n")
         if blob.name.endswith('.xml'):
             print("{:<30}".format("Parsing CCDA XML file") + Fore.GREEN + blob.name)
