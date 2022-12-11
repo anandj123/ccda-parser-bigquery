@@ -1419,7 +1419,7 @@
       {
         "description": "bq-datetime",
         "mode": "NULLABLE",
-        "name": "STRING",
+        "name": "date",
         "type": "TIMESTAMP"
       }
     ],
