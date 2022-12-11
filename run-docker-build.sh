@@ -10,6 +10,5 @@ docker run  -e GCS_LOCATION="gs://anand-bq-test-2/HCA_TEST/Clinical/cerner" -e B
 #logn to container bash
 #docker run -it ccda-parser bash
 
-gcloud batch jobs submit ccda-parser-job-1 --location us-central1 --config batch_v1.json
-
-
+# Run the batch job with batch_v1.json configuration
+gcloud batch jobs submit  ccda-parser-job-$(date +%s) --location us-central1 --config batch_v1.json

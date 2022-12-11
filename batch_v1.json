@@ -17,7 +17,7 @@
                 ],
                 "computeResource": {
                     "cpuMilli": 2000,
-                    "memoryMib": 16
+                    "memoryMib": 2000
                 }
             },
             "taskCount": 1,
