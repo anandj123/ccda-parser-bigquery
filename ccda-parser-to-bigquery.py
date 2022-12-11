@@ -91,16 +91,38 @@ def parse():
     delimiter = None
     all_blobs = bucket.list_blobs(prefix=folder_name, delimiter=delimiter)
 
+   
+    # Note: The call returns a response only when the iterator is consumed.
+    bigquery_client = bigquery.Client(project=project_id)
+    dataset_ref = bigquery_client.dataset(data_set_id)
+    table_ref = dataset_ref.table(table_id)
+    
+    table_exist = True
     try:
-        # Note: The call returns a response only when the iterator is consumed.
-        bigquery_client = bigquery.Client(project=project_id)
-        dataset_ref = bigquery_client.dataset(data_set_id)
-        table_ref = dataset_ref.table(table_id)
         table = bigquery_client.get_table(table_ref)  # API call
-        job_config = bigquery.LoadJobConfig()
-        job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
     except:
-        print('Table not found, creating table')
+        table_exist = False
+
+    if not table_exist:
+        try:
+            print('Table not found, creating table')
+            schema_file = open('schema.json','r')
+    
+            #read whole file to a string
+            schema = schema_file.read()
+    
+            #close file
+            schema_file.close()
+
+            table = bigquery.Table(table_id, schema=schema)
+            table = bigquery_client.create_table(table)  # Make an API request.
+            print("Created table {}.{}.{}".format(table.project, table.dataset_id, table.table_id))
+        except:
+            print("Error cannot create BigQuery table, exiting.")
+            exit(0)
+
+    job_config = bigquery.LoadJobConfig()
+    job_config.source_format = bigquery.SourceFormat.NEWLINE_DELIMITED_JSON
 
     total_files_processed = 0
     for blob in all_blobs:
@@ -163,10 +185,10 @@ def parse():
                     bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
                     
                 total_files_processed = total_files_processed + 1
-            except err:
+            except :
                 print("{:<30}".format("Error during processing") + 
                         Fore.RED + 
-                        blob.name + '\n' + err)
+                        blob.name + '\n' )
                 
 
     print("Finished processing. Summary statistics")
