@@ -26,7 +26,7 @@
           {
             "mode": "NULLABLE",
             "name": "value",
-            "type": "FLOAT"
+            "type": "STRING"
           },
           {
             "mode": "NULLABLE",
@@ -232,7 +232,7 @@
           {
             "mode": "NULLABLE",
             "name": "code",
-            "type": "FLOAT"
+            "type": "STRING"
           },
           {
             "mode": "NULLABLE",
@@ -510,7 +510,7 @@
           {
             "mode": "NULLABLE",
             "name": "value",
-            "type": "FLOAT"
+            "type": "STRING"
           }
         ],
         "mode": "NULLABLE",
@@ -734,7 +734,7 @@
           {
             "mode": "NULLABLE",
             "name": "value",
-            "type": "FLOAT"
+            "type": "STRING"
           }
         ],
         "mode": "NULLABLE",
@@ -1518,7 +1518,7 @@
           {
             "mode": "NULLABLE",
             "name": "code",
-            "type": "FLOAT"
+            "type": "STRING"
           },
           {
             "mode": "NULLABLE",
