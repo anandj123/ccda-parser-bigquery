@@ -47,10 +47,8 @@ def load_params():
     gcs_location = options.gcs_location
     global bq_location 
     bq_location = options.bq_location
-
     valid = True
-    print()
-    print('-'*60)
+
     if (not gcs_location.startswith("gs://")):
         print("GCS location for CCDA files: " + gcs_location)
         print("Please provide GCS location as "  + "gs://bucket/folder/")
@@ -62,6 +60,7 @@ def load_params():
         print("BQ location for CCDA files: "  + bq_location)
         print('Please provide BQ location as '  + 'project.dataset.table')
         valid = False
+
     if (not valid):
         exit()
     print("Processing CCDA files from GCS location: {}".format(gcs_location))
