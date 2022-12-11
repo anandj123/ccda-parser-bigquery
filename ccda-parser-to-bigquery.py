@@ -138,7 +138,10 @@ def parse():
                     break
                 print( "Job {} is currently in state {}".format( load_job.job_id, load_job.state ) )
                 time.sleep( 5 )
-            print( "Job finished state {}".format( load_job.state ) )
+            if load_job.errors != None:
+                print( "Query Failed." )
+            else:
+                print( "Job finished state {}".format( load_job.state ) )
                 
             print("{:<30}".format("Loading to BigQuery job_id") + 
                     Fore.GREEN + 
