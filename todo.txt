@@ -1,1 +1,2 @@
 immunization_declines - need to get an example
+bq mk anand-bq-test-2:hca_clinical.ccda-golden schema.json
