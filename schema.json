@@ -42,7 +42,7 @@
         "description": "bq-datetime",
         "mode": "NULLABLE",
         "name": "date",
-        "type": "TIMESTAMP"
+        "type": "STRING"
       }
     ],
     "mode": "REPEATED",
@@ -156,7 +156,7 @@
         "description": "bq-datetime",
         "mode": "NULLABLE",
         "name": "date",
-        "type": "TIMESTAMP"
+        "type": "STRING"
       },
       {
         "fields": [
@@ -389,7 +389,7 @@
             "description": "bq-datetime",
             "mode": "NULLABLE",
             "name": "date",
-            "type": "TIMESTAMP"
+            "type": "STRING"
           }
         ],
         "mode": "REPEATED",
@@ -585,7 +585,7 @@
         "description": "bq-datetime",
         "mode": "NULLABLE",
         "name": "date",
-        "type": "TIMESTAMP"
+        "type": "STRING"
       }
     ],
     "mode": "REPEATED",
@@ -862,7 +862,7 @@
             "description": "bq-datetime",
             "mode": "NULLABLE",
             "name": "start",
-            "type": "TIMESTAMP"
+            "type": "STRING"
           }
         ],
         "mode": "NULLABLE",
@@ -1420,7 +1420,7 @@
         "description": "bq-datetime",
         "mode": "NULLABLE",
         "name": "date",
-        "type": "TIMESTAMP"
+        "type": "STRING"
       }
     ],
     "mode": "NULLABLE",
