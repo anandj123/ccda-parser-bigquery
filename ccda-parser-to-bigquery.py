@@ -163,10 +163,10 @@ def parse():
                     bucket.rename_blob(blob, new_name=blob.name.replace(folder_name, folder_name+'/'+'done'))
                     
                 total_files_processed = total_files_processed + 1
-            except:
+            except err:
                 print("{:<30}".format("Error during processing") + 
                         Fore.RED + 
-                        blob.name + '\n' + load_job.errors)
+                        blob.name + '\n' + err)
                 
 
     print("Finished processing. Summary statistics")
