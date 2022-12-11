@@ -1,24 +1,15 @@
 FROM gcr.io/google.com/cloudsdktool/google-cloud-cli:latest
-WORKDIR /ccda-parser
+#FROM alpine
 
-RUN apt-get -qqy update
-RUN apt-get -qqy install \
-    nodejs \
-    npm 
-RUN python3 --version
-RUN node -v
-RUN npm -v
-RUN git --version
-RUN rm -rf ./ccda-parser-personal
+#RUN apt-get update
+RUN apt-get install -qqy npm
 RUN git clone https://github.com/anandj123/ccda-parser-personal.git --quiet
+WORKDIR ccda-parser-personal
 
-RUN git fetch --all
-RUN git reset --hard 
-RUN git pull
-#RUN npm install ejs
 RUN npm install
-#RUN npm audit fix 
 RUN pip install -r requirements.txt
 
-CMD python3 ccda-parser-personal/ccda-parser-to-bigquery.py -gcs_location $GCS_LOCATION -bq_location $BQ_LOCATION
+#ENTRYPOINT ["python3", "ccda-parser-to-bigquery.py"]
+#CMD ["-gcs_location", "gs://anand-bq-test-2/HCA_TEST/Clinical/cerner", "-bq_location", "anand-bq-test-2.hca_clinical.ccda-golden"]
 
+CMD python3 ccda-parser-to-bigquery.py -gcs_location $GCS_LOCATION -bq_location $BQ_LOCATION
