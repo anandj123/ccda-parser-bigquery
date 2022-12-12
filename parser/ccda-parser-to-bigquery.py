@@ -21,6 +21,7 @@ import json
 import re
 import argparse
 import time
+import os
 from google.cloud import storage
 
 gcs_location = ''
@@ -130,7 +131,7 @@ def parse():
 
       try:
         # Call node subprocess to parse the CCDA file
-        cmd_list = ['node', 'ccda-parse.js', path_to_file]
+        cmd_list = ['node', '{}/ccda-parse.js'.format(os.getcwd()), path_to_file]
         
         p = subprocess.Popen(
             cmd_list,
