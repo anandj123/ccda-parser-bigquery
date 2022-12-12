@@ -1,9 +1,0 @@
-immunization_declines - need to get an example
-bq rm -f -t anand-bq-test-2:hca_clinical.ccda-golden 
-bq mk anand-bq-test-2:hca_clinical.ccda-golden schema.json
-git pull && python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/Clinical/HCA -bq_location anand-bq-test-2.hca_clinical.ccda-golden
-
-git pull && python3 ccda-parser-to-bigquery.py -gcs_location gs://anand-bq-test-2/HCA_TEST/Clinical/cerner -bq_location anand-bq-test-2.hca_clinical.ccda-golden
-
-git pull && gsutil -m cp test-data/* gs://anand-bq-test-2/HCA_TEST/Clinical/cerner/
-
