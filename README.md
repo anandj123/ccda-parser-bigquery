@@ -55,7 +55,7 @@ export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
 
 
 ## Build application
-Build the application
+Build the application using Google Cloud Build.
 
 ```sh
 
@@ -78,7 +78,7 @@ gsutil cp  test-data/*.* $GCS_LOCATION
 Run the following command for submitting a Google Cloud Batch job
 
 ```sh
-chmod +x build/launch-ccda-batch-custom.sh && build/launch-ccda-batch-custom.sh
+cd build && chmod +x launch-ccda-batch-custom.sh && ./launch-ccda-batch-custom.sh && cd ..
 ```
 
 # Deploy to Cloud Composer for schedule run
