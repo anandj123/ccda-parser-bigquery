@@ -46,7 +46,7 @@ export REGION=<YOUR_REGION>
 |Variable Name|Description|
 |---|---|
 |PROJECT_ID|Provide your project id. |
-|GCS_LOCATION| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
+|GCS_LOCATION| Provide GCS location for input CCDA XML files e.g. ```gs://bucket_name/folder_name/``` |
 |BQ_LOCATION| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
 |IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
 |REGION|Provide the Google Cloud region for your application. e.g. us-east-1 |
