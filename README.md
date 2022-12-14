@@ -14,9 +14,9 @@ The following prerequisite are required for the build
 1. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
 The following services needs to be enabled
-* Cloud Build API
-* Artifact Registry API
-* Batch API
+* [Cloud Build API](https://cloud.google.com/build/docs)
+* [Artifact Registry API](https://cloud.google.com/artifact-registry/docs)
+* [Batch API](https://cloud.google.com/batch/docs/get-started)
 
 You can check if these services are enabled by running these commands
 ```sh
@@ -153,4 +153,7 @@ ccda.data.procedures
 ccda.data.smoking_status
 ccda.data.vitals
 ```
+# Reference
+[1] Blue-Button.js Documentation
+http://blue-button.github.io/bluebutton.js/docs/
 
