@@ -188,7 +188,9 @@ def parse():
         bucket.rename_blob(
             blob,
             new_name=blob.name.replace(folder_name,
-                                        folder_name + '/' + 'done'))
+                                       folder_name + 
+                                       '' if folder_name[-1] == '/' else '/' + 
+                                       'done'))
         total_success_files = total_success_files + 1
     except:
       print('Error during processing: {}'.format(blob.name))
