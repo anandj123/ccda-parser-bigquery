@@ -11,9 +11,7 @@ This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.
 ### Prerequisite
 The following prerequisite are required for the build
 
-1. [Installed python3](https://www.python.org/downloads/)
-2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
-3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+1. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
 ### Clone the repo
 1. Clone this repo for building the application image in your environment.
