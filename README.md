@@ -62,6 +62,7 @@ This above command will build the image using [Google Cloud Build](https://cloud
 |-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
 |-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
 |IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
+|REGIION|Provide the Google Cloud region for your application. e.g. us-east-1 |
 
 # Build the application and create an image
 
