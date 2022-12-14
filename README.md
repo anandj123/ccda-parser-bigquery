@@ -22,6 +22,10 @@ You can check if these services are enabled by running these commands
 ```sh
 
 export PROJECT_ID=<YOUR_PROJECT_ID>
+
+```
+
+```sh
 gcloud services list --enabled --project $PROJECT_ID | grep -E "cloudbuild.googleapis.com|artifactregistry.googleapis.com|batch.googleapis.com"
 
 ```
