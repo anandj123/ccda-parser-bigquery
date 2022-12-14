@@ -20,10 +20,10 @@ The following services needs to be enabled
 
 You can check if these services are enabled by running these commands
 ```sh
+
 export PROJECT_ID=<YOUR_PROJECT_ID>
-gcloud services list --enabled --project $PROJECT_ID | grep "cloudbuild.googleapis.com"
-gcloud services list --enabled --project $PROJECT_ID | grep "artifactregistry.googleapis.com"
-gcloud services list --enabled --project $PROJECT_ID | grep "batch.googleapis.com"
+gcloud services list --enabled --project $PROJECT_ID | grep -E "cloudbuild.googleapis.com|artifactregistry.googleapis.com|batch.googleapis.com"
+
 ```
 ### Clone the repo
 1. Clone this repo for building the application image in your environment.
