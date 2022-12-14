@@ -102,7 +102,9 @@ def parse():
                             project_id, 
                             data_set_id, 
                             table_id))
-      schema = bigquery_client.schema_from_json('schema.json')
+      schema = bigquery_client.schema_from_json(
+        '{}/schema.json'.format(
+          os.path.dirname(os.path.realpath(__file__))))
       table = bigquery.Table(table_ref, schema=schema)
       table = bigquery_client.create_table(table)  # Make an API request.
     except:
@@ -131,7 +133,8 @@ def parse():
 
       try:
         # Call node subprocess to parse the CCDA file
-        cmd_list = ['node', '{}/ccda-parse.js'.format(os.getcwd()), path_to_file]
+        cmd_list = ['node', '{}/ccda-parse.js'.format(
+          os.path.dirname(os.path.realpath(__file__))), path_to_file]
         
         p = subprocess.Popen(
             cmd_list,

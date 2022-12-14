@@ -9,8 +9,8 @@
                         },
                         "environment": {
                             "variables": {
-                                "GCS_LOCATION": "gs://$PROJECT_ID/HCA_TEST/Clinical/cerner",
-                                "BQ_LOCATION": "$PROJECT_ID.hca_clinical.ccda-golden"
+                                "GCS_LOCATION": "$GCS_LOCATION",
+                                "BQ_LOCATION": "$BQ_LOCATION"
                             }
                         }
                     }
