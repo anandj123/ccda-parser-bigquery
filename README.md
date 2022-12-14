@@ -1,32 +1,30 @@
 # Overview
-This application uses blue-button js module to parse CCDA files and loads into BigQuery.
-This application is used as batch load of CCDA files available in GCS location that will be downloaded parsed
-and then loaded into BigQuery.
+This application will allow healthcare providers to parse and load C-CDA "[Consolidated Clinical Document Architecture](https://en.wikipedia.org/wiki/Consolidated_Clinical_Document_Architecture)"  files from XML format to BigQuery so that analytics and models on this data could be leveraged to better serve the patients.
 
+This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.js) module to parse C-CDA files and loads into BigQuery. This application can be used as a batch load of C-CDA files available in (specified) GCS location and loaded into (Specified) BigQuery table.
 
 # Architecture
 
 ![Architecture](./img/arch.png)
 
-# Setup instructions
-1. Clone this repo for the running this application on a server.
-3. Install python3 (if you don't have python3 already installed)
-4. Install latest version of node.js
-5. Install latest version of google-cloud-storage
-```sh
-python3 -m pip install google-cloud-storage
-python3 -m pip install google-cloud-bigquery
-```
+# Build instructions
+## Prerequisite
+The following prerequisite are required for the build
 
-6. Install required node modules
-```sh
-npm install
-```
+1. [Installed python3](https://www.python.org/downloads/)
+2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
+3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
-# Google Cloud setup
+## Clone the repo
+1. Clone this repo for building the application image in your environment.
+
+```sh
+git clone https://github.com/anandj123/ccda-parser-personal.git
+
+```
+## Google Cloud CLI (command line interface) setup
 Setup Google Cloud IAM permissions for access to read GCS files and write to BigQuery tables.
 
-For local testing:
 Get the authentication token to run this application for your GCP project. 
 
 ```sh
@@ -34,14 +32,39 @@ gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_NAME>
 ```
 
-# Run application
-To run the sample use the following command
+## Setup environment variables for the application
 
-Get help of how to run the application
+The following environment variables are required for the application.
 
 ```sh
-python3 ccda-parser-to-bigquery.py  -h
+export PROJECT_ID=<YOUR_PROJECT_ID>
+export GCS_LOCATION=<YOUR_GCS_LOCATION_FOR_CCDA_XML_FILES>
+export BQ_LOCATION=<TARGET_BQ_TABLE>
+export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
+export REGION=<YOUR_REGION>
 ```
+
+## Build application
+Build the application
+
+```sh
+
+cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
+```
+
+This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LOCATION```
+
+
+# Parameters
+
+| Name | Description |
+|---|----|
+|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
+|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
+|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
+
+# Build the application and create an image
+
 
 Usage of the application:
 ```sh
@@ -62,35 +85,30 @@ optional arguments:
 
 ```
 
-# Parameters
-
-| Name | Description |
-|---|----|
-|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
-|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
 
 
 # Output
 
-If all the inputs are provided properly the output should look like following:
+The output BigQuery table looks like the following
+
+![BigQuery Table](./img/output.png)
+
+The following sections of the C-CDA documents are parsed.
 ```sh
-
-------------------------------------------------------------
-Processing CCDA files from    gs://<bucket>/<folder>/<folder>/
-Loading to                    <project_id>.<dataset_id>.<table_id>
-
-Start processing CCDA documents ...
-------------------------------------------------------------
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file1.xml
-Loading to BigQuery job_id    ad9ca47e-b9b0-41f3-9c17-69fdee928f62
-
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file2.xml
-Loading to BigQuery job_id    8c9f6368-5430-4298-99f8-88fa476021a2
-
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file3.xml
-Loading to BigQuery job_id    bdcd417a-3916-49e3-a3ed-beb9978dff56
-
-Finished processing. Summary statistics
-------------------------------------------------------------
-Total CCDA files parsed       3
+ccda.data.document
+ccda.data.allergies
+ccda.data.care_plan
+ccda.data.chief_complaint
+ccda.data.demographics
+ccda.data.encounters
+ccda.data.functional_statuses
+ccda.data.immunizations
+ccda.data.instructions
+ccda.data.results
+ccda.data.medications
+ccda.data.problems
+ccda.data.procedures
+ccda.data.smoking_status
+ccda.data.vitals
 ```
+

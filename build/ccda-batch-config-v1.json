@@ -5,7 +5,7 @@
                 "runnables": [
                     {
                         "container": {
-                            "image_uri": "us-docker.pkg.dev/$PROJECT_ID/ccda-bigquery-repo/ccda-bigquery:latest"
+                            "image_uri": "$IMAGE_LOCATION"
                         },
                         "environment": {
                             "variables": {
