@@ -42,6 +42,7 @@ export GCS_LOCATION=<YOUR_GCS_LOCATION_FOR_CCDA_XML_FILES>
 export BQ_LOCATION=<TARGET_BQ_TABLE>
 export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
 export REGION=<YOUR_REGION>
+export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
 ```
 |Variable Name|Description|
 |---|---|
@@ -50,6 +51,8 @@ export REGION=<YOUR_REGION>
 |BQ_LOCATION| Provide BigQuery table name to store the result e.q. **project-id.data-set-id.table-id** |
 |IMAGE_LOCATION|Provide the artifact registry location e.g. **us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest**|
 |REGION|Provide the Google Cloud region for your application. e.g. **us-east1** |
+|COMPOSER_ENVIRONMENT|Your composer environment name. If you want to schedule the batch run using composer.|
+
 
 ## Build application
 Build the application
@@ -87,7 +90,6 @@ and then select the DAGs folder.
 or use the following command
 
 ```sh
-export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
 gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}|xargs'
 ```
 
@@ -97,8 +99,9 @@ copy ```build\ccda-batch-config-custom.json``` to ```DAG/scripts``` folder
 copy ```build\launch-ccda-batch-custom.sh``` to ```DAG/scripts``` folder
 
 or use the following commands
+
 ```sh
-export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
+
 export DAG_FOLDER=$(gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}'|xargs)
 gsutil cp build/ccda-composer-schedule.py ${DAG_FOLDER}/
 gsutil cp build/ccda-batch-config-custom.json ${DAG_FOLDER}/scripts/
