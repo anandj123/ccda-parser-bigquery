@@ -22,7 +22,8 @@ from datetime import timedelta
 default_args = {
     'start_date': airflow.utils.dates.days_ago(0),
     'retries': 1,
-    'retry_delay': timedelta(minutes=5)
+    'retry_delay': timedelta(minutes=5),
+    'schedule_interval': '@hourly'
 }
 
 dag = DAG(

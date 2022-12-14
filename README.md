@@ -13,6 +13,18 @@ The following prerequisite are required for the build
 
 1. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
+The following services needs to be enabled
+* Cloud Build API
+* Artifact Registry API
+* Batch API
+
+You can check if these services are enabled by running these commands
+```sh
+export PROJECT_ID=<YOUR_PROJECT_ID>
+gcloud services list --enabled --project $PROJECT_ID | grep "cloudbuild.googleapis.com"
+gcloud services list --enabled --project $PROJECT_ID | grep "artifactregistry.googleapis.com"
+gcloud services list --enabled --project $PROJECT_ID | grep "batch.googleapis.com"
+```
 ### Clone the repo
 1. Clone this repo for building the application image in your environment.
 
