@@ -7,32 +7,22 @@ This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.
 
 ![Architecture](./img/arch.png)
 
-# Prerequisite
+# Build instructions
+## Prerequisite
+The following prerequisite are required for the build
+
 1. [Installed python3](https://www.python.org/downloads/)
 2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
 3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
-# Install instructions
+## Clone the repo
 1. Clone this repo for building the application image in your environment.
 
 ```sh
 git clone https://github.com/anandj123/ccda-parser-personal.git
 
 ```
-
-2. Install required python modules
-
-```sh
-pip install -r requirements.txt
-```
-
-6. Install required node modules
-
-```sh
-npm install
-```
-
-# Google Cloud CLI (command line interface) setup
+## Google Cloud CLI (command line interface) setup
 Setup Google Cloud IAM permissions for access to read GCS files and write to BigQuery tables.
 
 Get the authentication token to run this application for your GCP project. 
@@ -41,15 +31,6 @@ Get the authentication token to run this application for your GCP project.
 gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_NAME>
 ```
-# Parameters
-
-| Name | Description |
-|---|----|
-|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
-|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
-|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
-
-# Build the application and create an image
 
 ## Setup environment variables for the application
 
@@ -63,7 +44,7 @@ export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
 export REGION=<YOUR_REGION>
 ```
 
-# Build application
+## Build application
 Build the application
 
 ```sh
@@ -72,6 +53,17 @@ cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
 ```
 
 This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LCATION```
+
+
+# Parameters
+
+| Name | Description |
+|---|----|
+|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
+|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
+|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
+
+# Build the application and create an image
 
 
 Usage of the application:
