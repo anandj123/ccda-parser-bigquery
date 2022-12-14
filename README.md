@@ -8,21 +8,21 @@ This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.
 ![Architecture](./img/arch.png)
 
 # Build instructions
-## Prerequisite
+### Prerequisite
 The following prerequisite are required for the build
 
 1. [Installed python3](https://www.python.org/downloads/)
 2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
 3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
-## Clone the repo
+### Clone the repo
 1. Clone this repo for building the application image in your environment.
 
 ```sh
 git clone https://github.com/anandj123/ccda-parser-personal.git && cd ccda-parser
 
 ```
-## Google Cloud CLI (command line interface) setup
+### Google Cloud CLI (command line interface) setup
 Setup Google Cloud IAM permissions for access to read GCS files and write to BigQuery tables.
 
 Get the authentication token to run this application for your GCP project. 
@@ -32,7 +32,7 @@ gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_NAME>
 ```
 
-## Setup environment variables for the application
+### Setup environment variables for the application
 
 The following environment variables are required for the application.
 
@@ -54,7 +54,7 @@ export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
 |COMPOSER_ENVIRONMENT|Your composer environment name. If you want to schedule the batch run using composer.|
 
 
-## Build application
+### Build application
 Build the application using Google Cloud Build.
 
 ```sh
@@ -66,14 +66,14 @@ This above command will build the image using [Google Cloud Build](https://cloud
 
 # Test the application
 
-## Copy test data
+### Copy test data
 Copy the following test data to your GCS location for testing
 
 ```sh
 gsutil cp  test-data/*.* $GCS_LOCATION
 ```
 
-## Submit the Google Cloud batch job for testing
+### Submit the Google Cloud batch job for testing
 
 Run the following command for submitting a Google Cloud Batch job
 
