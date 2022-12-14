@@ -61,29 +61,50 @@ cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
 
 This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LOCATION```
 
-# Build the application and create an image
+# Test the application
 
+## Copy test data
+Copy the following test data to your GCS location for testing
 
-Usage of the application:
 ```sh
-usage: ccda-parser-to-bigquery.py [-h] -gcs_location GCS_LOCATION -bq_location
-                                  BQ_LOCATION
+gsutil cp  test-data/*.* $GCS_LOCATION
+```
 
-This application downloads CCDA files from GCS, parses them using
-bluebutton.js library and uploads the parsed content to BigQuery.
+## Submit the Google Cloud batch job for testing
 
-optional arguments:
-  -h, --help            show this help message and exit
-  -gcs_location GCS_LOCATION
-                        Provide GCS location for input CCDA XML files e.g.
-                        gs://bucket_name/folder_name/
-  -bq_location BQ_LOCATION
-                        Provide BigQuery table name to store the result e.q.
-                        project-id.data-set-id.table-id
+Run the following command for submitting a Google Cloud Batch job
 
+```sh
+chmod +x build/launch-ccda-batch-custom.sh && build/launch-ccda-batch-custom.sh
+```
+
+# Deploy to Cloud Composer for schedule run
+
+Get the location of the GCS bucket of the Cloud Composer environment. To get the 
+DAG folder of your environment, go to the Cloud Composer screen in your google cloud console
+and then select the DAGs folder.
+
+or use the following command
+
+```sh
+export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
+gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}|xargs'
 ```
 
 
+copy ```build\ccda-composer-schedule.py``` to your ```DAG folder```
+copy ```build\ccda-batch-config-custom.json``` to ```DAG/scripts``` folder
+copy ```build\launch-ccda-batch-custom.sh``` to ```DAG/scripts``` folder
+
+or use the following commands
+```sh
+export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
+export DAG_FOLDER=$(gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}'|xargs)
+gsutil cp build/ccda-composer-schedule.py ${DAG_FOLDER}/
+gsutil cp build/ccda-batch-config-custom.json ${DAG_FOLDER}/scripts/
+gsutil cp build/launch-ccda-batch-custom.sh ${DAG_FOLDER}/scripts/
+
+```
 
 # Output
 

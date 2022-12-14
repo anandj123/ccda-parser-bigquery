@@ -117,81 +117,81 @@ def parse():
   total_success_files = 0
   total_error_files = 0
   for blob in all_blobs:
-
+    try:
     # Ignore files that are in /done folder
-    if (blob.name.startswith(folder_name + '/done/')):
-      continue
+      if (blob.name.startswith(folder_name + '/done/')):
+        continue
 
-    # Process files if they are of .XML extension
-    if blob.name.endswith('.xml'):
-      print('Parsing CCDA XML file: {}'.format(blob.name))
+      # Process files if they are of .XML extension
+      if blob.name.endswith('.xml'):
+        print('Parsing CCDA XML file: {}'.format(blob.name))
 
       # Download XML to current local location for Node to process
       path_to_file = 'current.xml'
       destination_uri = '{}/{}'.format('.', path_to_file)
       blob.download_to_filename(destination_uri)
 
-      try:
-        # Call node subprocess to parse the CCDA file
-        cmd_list = ['node', '{}/ccda-parse.js'.format(
-          os.path.dirname(os.path.realpath(__file__))), path_to_file]
-        
-        p = subprocess.Popen(
-            cmd_list,
-            stdout=subprocess.PIPE,
-            stdin=subprocess.PIPE,
-            stderr=subprocess.PIPE)
-        result, error = p.communicate()
-        p.stdin.close()
+      
+      # Call node subprocess to parse the CCDA file
+      cmd_list = ['node', '{}/ccda-parse.js'.format(
+        os.path.dirname(os.path.realpath(__file__))), path_to_file]
+      
+      p = subprocess.Popen(
+          cmd_list,
+          stdout=subprocess.PIPE,
+          stdin=subprocess.PIPE,
+          stderr=subprocess.PIPE)
+      result, error = p.communicate()
+      p.stdin.close()
 
-        # Error during parsing, print the error message and continue
-        if p.returncode != 0:
-          print(error.decode('UTF-8'))
-          print('Failed to parse clinical XML at %s' % blob.name)
-          total_error_files = total_error_files + 1
-          continue
-        
-        # Convert the result json from binary to string,
-        #  remove all new line character
-        #  create a Load job to load data to BigQuery
-        
-        load_job = bigquery_client.load_table_from_file(
-            io.StringIO(result.decode('utf-8').replace('\n', '')), 
-            table, 
-            job_config=job_config)
+      # Error during parsing, print the error message and continue
+      if p.returncode != 0:
+        print(error.decode('UTF-8'))
+        print('Failed to parse clinical XML at %s' % blob.name)
+        total_error_files = total_error_files + 1
+        continue
+      
+      # Convert the result json from binary to string,
+      #  remove all new line character
+      #  create a Load job to load data to BigQuery
+      
+      load_job = bigquery_client.load_table_from_file(
+          io.StringIO(result.decode('utf-8').replace('\n', '')), 
+          table, 
+          job_config=job_config)
 
-        # If load job failed, we print error message and proceed to next file
-        if load_job.errors != None:
-          print('Load to BigQuery failed: {}'.format(load_job.errors))
-          total_error_files = total_error_files + 1
-          continue
+      # If load job failed, we print error message and proceed to next file
+      if load_job.errors != None:
+        print('Load to BigQuery failed: {}'.format(load_job.errors))
+        total_error_files = total_error_files + 1
+        continue
 
-        # Wait till the BigQuery job is finished
-        #  this is so that the BigQuery table update quote is not violated.
-        while True:
-          load_job = bigquery_client.get_job(
-              load_job.job_id)  # API request - fetches job
-          if load_job.state != 'RUNNING':
-            break
-          print('Job {} is currently in state {}'.format(
-              load_job.job_id, load_job.state))
-          time.sleep(5)
+      # Wait till the BigQuery job is finished
+      #  this is so that the BigQuery table update quote is not violated.
+      while True:
+        load_job = bigquery_client.get_job(
+            load_job.job_id)  # API request - fetches job
+        if load_job.state != 'RUNNING':
+          break
+        print('Job {} is currently in state {}'.format(
+            load_job.job_id, load_job.state))
+        time.sleep(5)
 
-        # If BigQuery job failed, print error message and proceed to next file
-        if load_job.errors != None:
-          print('Load to BigQuery failed: {}'.format(load_job.errors))
-          total_error_files = total_error_files + 1
-          continue
-        else:
-          # move the file to DONE folder so that it is not processed again
-          print('Job {} state {}'.format(load_job.job_id, load_job.state))
-          bucket.rename_blob(
-              blob,
-              new_name=blob.name.replace(folder_name,
-                                         folder_name + '/' + 'done'))
-          total_success_files = total_success_files + 1
-      except:
-        print('Error during processing: {}'.format(blob.name))
+      # If BigQuery job failed, print error message and proceed to next file
+      if load_job.errors != None:
+        print('Load to BigQuery failed: {}'.format(load_job.errors))
+        total_error_files = total_error_files + 1
+        continue
+      else:
+        # move the file to DONE folder so that it is not processed again
+        print('Job {} state {}'.format(load_job.job_id, load_job.state))
+        bucket.rename_blob(
+            blob,
+            new_name=blob.name.replace(folder_name,
+                                        folder_name + '/' + 'done'))
+        total_success_files = total_success_files + 1
+    except:
+      print('Error during processing: {}'.format(blob.name))
 
   print('Total CCDA files parsed with SUCCESS: {} with ERRORS: {}'.format(
       total_success_files, total_error_files))
