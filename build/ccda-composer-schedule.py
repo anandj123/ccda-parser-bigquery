@@ -22,15 +22,14 @@ from datetime import timedelta
 default_args = {
     'start_date': airflow.utils.dates.days_ago(0),
     'retries': 1,
-    'retry_delay': timedelta(minutes=5),
-    'schedule_interval': '0 * * * *'
+    'retry_delay': timedelta(minutes=5)
 }
 
 dag = DAG(
     'ccda-composer-schedule',
     default_args=default_args,
-    description='Schedule CCDA parser job on Google Cloud Batch',
-    schedule_interval=None,
+    description='Schedule C-CDA parser job on Google Cloud Batch',
+    schedule_interval='0 * * * *',
     dagrun_timeout=timedelta(hours=24))
 
 # priority_weight has type int in Airflow DB, uses the maximum.
