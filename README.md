@@ -43,6 +43,12 @@ export BQ_LOCATION=<TARGET_BQ_TABLE>
 export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
 export REGION=<YOUR_REGION>
 ```
+|Variable Name|Description|
+|PROJECT_ID|Provide your project id. |
+|GCS_LOCATION| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
+|BQ_LOCATION| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
+|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
+|REGION|Provide the Google Cloud region for your application. e.g. us-east-1 |
 
 ## Build application
 Build the application
@@ -53,16 +59,6 @@ cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
 ```
 
 This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LOCATION```
-
-
-# Parameters
-
-| Name | Description |
-|---|----|
-|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
-|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
-|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
-|REGIION|Provide the Google Cloud region for your application. e.g. us-east-1 |
 
 # Build the application and create an image
 
