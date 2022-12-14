@@ -52,7 +52,7 @@ Build the application
 cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
 ```
 
-This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LCATION```
+This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LOCATION```
 
 
 # Parameters
