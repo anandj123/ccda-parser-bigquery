@@ -123,7 +123,7 @@ The Composer DAG is by default scheduled to run every hour. If you want a differ
 ```python
  'schedule_interval': '0 * * * *'
 ```
-to the schedule you would like to run before deploying it to composer.
+to the schedule (in [cron expression](https://en.wikipedia.org/wiki/Cron#CRON_expression)) you would like to run before deploying it to composer.
 
 # Output
 
