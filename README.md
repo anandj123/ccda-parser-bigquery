@@ -116,6 +116,15 @@ gsutil cp build/launch-ccda-batch-custom.sh ${DAG_FOLDER}/scripts/
 
 ```
 
+### Note
+
+The Composer DAG is by default scheduled to run every hour. If you want a different schedule change the value of
+
+```python
+ 'schedule_interval': '0 * * * *'
+```
+to the schedule you would like to run before deploying it to composer.
+
 # Output
 
 The output BigQuery table looks like the following
