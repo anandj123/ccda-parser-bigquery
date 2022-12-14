@@ -49,7 +49,7 @@ export COMPOSER_ENVIRONMENT=<YOUR_COMPOSER_ENVIRONMENT_NAME>
 |BQ_LOCATION| Provide BigQuery table name to store the result e.q. **project-id.data-set-id.table-id** |
 |IMAGE_LOCATION|Provide the artifact registry location e.g. **us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest**|
 |REGION|Provide the Google Cloud region for your application. e.g. **us-east1** |
-|COMPOSER_ENVIRONMENT|Your composer environment name. If you want to schedule the batch run using composer.|
+|COMPOSER_ENVIRONMENT|Your composer environment name. If you want to schedule the batch run using composer. e.g. **composer-dev**|
 
 
 ### Build application
@@ -79,10 +79,10 @@ Run the following command for submitting a Google Cloud Batch job
 cd build && chmod +x launch-ccda-batch-custom.sh && ./launch-ccda-batch-custom.sh && cd ..
 ```
 
-# Deploy to Cloud Composer for schedule run
+# Deploy to Cloud Composer for scheduled runs
 
-Get the location of the GCS bucket of the Cloud Composer environment. To get the 
-DAG folder of your environment, go to the Cloud Composer screen in your google cloud console
+Get the location of the DAG folder of the Cloud Composer environment. To get the 
+DAG folder of your environment, go to the Cloud Composer service in your google cloud console
 and then select the DAGs folder.
 
 or use the following command

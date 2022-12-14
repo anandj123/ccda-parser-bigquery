@@ -110,3 +110,5 @@ node_modules
 current.xml
 package-lock.json
 .DS_Store
+build/ccda-batch-config-custom.json
+build/launch-ccda-batch-custom.sh
