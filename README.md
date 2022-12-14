@@ -7,17 +7,27 @@ This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.
 
 ![Architecture](./img/arch.png)
 
+# Prerequisite
+1. [Installed python3](https://www.python.org/downloads/)
+2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
+3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
+
 # Setup instructions
-1. Clone this repo for the running this application on a server.
-3. Install python3 (if you don't have python3 already installed)
-4. Install latest version of node.js
-5. Install latest version of google-cloud-storage
+1. Clone this repo for building the application image in your environment.
+
+``` sh
+git clone https://github.com/anandj123/ccda-parser-personal.git
+cd ccda-parser
+```
+
+2. Install required python modules
+
 ```sh
-python3 -m pip install google-cloud-storage
-python3 -m pip install google-cloud-bigquery
+pip install -r requirements.txt
 ```
 
 6. Install required node modules
+
 ```sh
 npm install
 ```
