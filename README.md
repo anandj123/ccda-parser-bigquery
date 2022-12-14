@@ -12,12 +12,12 @@ This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.
 2. [Installed node.js](https://nodejs.org/en/download/package-manager/)
 3. [Installed Google Cloud SDK](https://cloud.google.com/sdk/docs/install)
 
-# Setup instructions
+# Install instructions
 1. Clone this repo for building the application image in your environment.
 
-``` sh
+```sh
 git clone https://github.com/anandj123/ccda-parser-personal.git
-cd ccda-parser
+
 ```
 
 2. Install required python modules
@@ -32,25 +32,47 @@ pip install -r requirements.txt
 npm install
 ```
 
-# Google Cloud setup
+# Google Cloud CLI (command line interface) setup
 Setup Google Cloud IAM permissions for access to read GCS files and write to BigQuery tables.
 
-For local testing:
 Get the authentication token to run this application for your GCP project. 
 
 ```sh
 gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_NAME>
 ```
+# Parameters
 
-# Run application
-To run the sample use the following command
+| Name | Description |
+|---|----|
+|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
+|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
+|IMAGE_LOCATION|Provide the artifact registry location e.g. us-docker.pkg.dev/<YOUR_PROJECT_ID>/ccda-bigquery-repo/ccda-bigquery:latest|
 
-Get help of how to run the application
+# Build the application and create an image
+
+## Setup environment variables for the application
+
+The following environment variables are required for the application.
 
 ```sh
-python3 ccda-parser-to-bigquery.py  -h
+export PROJECT_ID=<YOUR_PROJECT_ID>
+export GCS_LOCATION=<YOUR_GCS_LOCATION_FOR_CCDA_XML_FILES>
+export BQ_LOCATION=<TARGET_BQ_TABLE>
+export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
+export REGION=<YOUR_REGION>
 ```
+
+# Build application
+Build the application
+
+```sh
+
+cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
+```
+
+This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LCATION```
+
 
 Usage of the application:
 ```sh
@@ -71,12 +93,6 @@ optional arguments:
 
 ```
 
-# Parameters
-
-| Name | Description |
-|---|----|
-|-gcs_location| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
-|-bq_location| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
 
 
 # Output

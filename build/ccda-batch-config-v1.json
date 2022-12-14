@@ -5,12 +5,12 @@
                 "runnables": [
                     {
                         "container": {
-                            "image_uri": "us-docker.pkg.dev/$PROJECT_ID/ccda-bigquery-repo/ccda-bigquery:latest"
+                            "image_uri": "$IMAGE_LOCATION"
                         },
                         "environment": {
                             "variables": {
-                                "GCS_LOCATION": "gs://$PROJECT_ID/HCA_TEST/Clinical/cerner",
-                                "BQ_LOCATION": "$PROJECT_ID.hca_clinical.ccda-golden"
+                                "GCS_LOCATION": "$GCS_LOCATION",
+                                "BQ_LOCATION": "$BQ_LOCATION"
                             }
                         }
                     }

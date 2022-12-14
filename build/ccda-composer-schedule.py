@@ -35,7 +35,7 @@ dag = DAG(
 # priority_weight has type int in Airflow DB, uses the maximum.
 t1 = BashOperator(
     task_id='ccda-batch-job',
-    bash_command='./scripts/launch-ccda-batch.sh',
+    bash_command='./scripts/launch-ccda-batch-custom.sh',
     dag=dag,
     depends_on_past=False,
     priority_weight=2**31-1)

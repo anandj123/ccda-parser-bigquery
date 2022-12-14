@@ -1,3 +1,6 @@
-# Build docker image and push it to gcr.io
-gcloud builds submit --region=us-west2 \
---tag us-docker.pkg.dev/anand-bq-test-2/ccda-bigquery-repo/ccda-bigquery:latest
+# Generate custom batch launch configurations
+envsubst < ccda-batch-config-v1.json > ccda-batch-config-custom.json
+envsubst < launch-ccda-batch-v1.sh > launch-ccda-batch-custom.sh
+
+# Build docker image and push it to google artifact registry
+gcloud builds submit --region=$REGION --tag $IMAGE_LOCATION
