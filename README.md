@@ -19,7 +19,7 @@ The following prerequisite are required for the build
 1. Clone this repo for building the application image in your environment.
 
 ```sh
-git clone https://github.com/anandj123/ccda-parser-personal.git
+git clone https://github.com/anandj123/ccda-parser-personal.git && cd ccda-parser
 
 ```
 ## Google Cloud CLI (command line interface) setup
@@ -59,7 +59,7 @@ Build the application
 
 ```sh
 
-cd ccda-parser/build && chmod +x cloud-build.sh && ./cloud-build.sh
+cd build && chmod +x cloud-build.sh && ./cloud-build.sh && cd ..
 ```
 
 This above command will build the image using [Google Cloud Build](https://cloud.google.com/build) and push the build image to ```$IMAGE_LOCATION```
@@ -94,9 +94,9 @@ gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix 
 ```
 
 
-copy ```build\ccda-composer-schedule.py``` to your ```DAG folder```
-copy ```build\ccda-batch-config-custom.json``` to ```DAG/scripts``` folder
-copy ```build\launch-ccda-batch-custom.sh``` to ```DAG/scripts``` folder
+* copy ```build\ccda-composer-schedule.py``` to your ```DAG folder```
+* copy ```build\ccda-batch-config-custom.json``` to ```DAG/scripts``` folder
+* copy ```build\launch-ccda-batch-custom.sh``` to ```DAG/scripts``` folder
 
 or use the following commands
 
