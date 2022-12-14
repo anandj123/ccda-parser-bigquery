@@ -44,6 +44,7 @@ export IMAGE_LOCATION=<YOUR_IMAGE_LOCATION>
 export REGION=<YOUR_REGION>
 ```
 |Variable Name|Description|
+|---|---|
 |PROJECT_ID|Provide your project id. |
 |GCS_LOCATION| Provide GCS location for input CCDA XML files e.g. gs://bucket_name/folder_name/ |
 |BQ_LOCATION| Provide BigQuery table name to store the result e.q. project-id.data-set-id.table-id |
