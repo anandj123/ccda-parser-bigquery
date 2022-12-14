@@ -1,8 +1,7 @@
 # Overview
-This application uses blue-button js module to parse CCDA files and loads into BigQuery.
-This application is used as batch load of CCDA files available in GCS location that will be downloaded parsed
-and then loaded into BigQuery.
+This application will allow healthcare providers to parse and load C-CDA "[Consolidated Clinical Document Architecture](https://en.wikipedia.org/wiki/Consolidated_Clinical_Document_Architecture)"  files from XML format to BigQuery so that analytics and models on this data could be leveraged to better serve the patients.
 
+This application uses [BlueButton.js](https://github.com/blue-button/bluebutton.js) module to parse C-CDA files and loads into BigQuery. This application can be used as a batch load of C-CDA files available in (specified) GCS location and loaded into (Specified) BigQuery table.
 
 # Architecture
 
@@ -72,25 +71,26 @@ optional arguments:
 
 # Output
 
-If all the inputs are provided properly the output should look like following:
+The output BigQuery table looks like the following
+
+![BigQuery Table](./img/output.png)
+
+The following sections of the C-CDA documents are parsed.
 ```sh
-
-------------------------------------------------------------
-Processing CCDA files from    gs://<bucket>/<folder>/<folder>/
-Loading to                    <project_id>.<dataset_id>.<table_id>
-
-Start processing CCDA documents ...
-------------------------------------------------------------
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file1.xml
-Loading to BigQuery job_id    ad9ca47e-b9b0-41f3-9c17-69fdee928f62
-
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file2.xml
-Loading to BigQuery job_id    8c9f6368-5430-4298-99f8-88fa476021a2
-
-Parsing CCDA XML file         <bucket>/<folder>/<folder>/file3.xml
-Loading to BigQuery job_id    bdcd417a-3916-49e3-a3ed-beb9978dff56
-
-Finished processing. Summary statistics
-------------------------------------------------------------
-Total CCDA files parsed       3
+ccda.data.document
+ccda.data.allergies
+ccda.data.care_plan
+ccda.data.chief_complaint
+ccda.data.demographics
+ccda.data.encounters
+ccda.data.functional_statuses
+ccda.data.immunizations
+ccda.data.instructions
+ccda.data.results
+ccda.data.medications
+ccda.data.problems
+ccda.data.procedures
+ccda.data.smoking_status
+ccda.data.vitals
 ```
+
