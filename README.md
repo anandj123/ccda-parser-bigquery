@@ -68,7 +68,7 @@ This above command will build the image using [Google Cloud Build](https://cloud
 Copy the following test data to your GCS location for testing
 
 ```sh
-gsutil cp  test-data/*.* $GCS_LOCATION
+gsutil -m cp test-data/*.* $GCS_LOCATION
 ```
 
 ### Submit the Google Cloud batch job for testing
@@ -76,7 +76,7 @@ gsutil cp  test-data/*.* $GCS_LOCATION
 Run the following command for submitting a Google Cloud Batch job
 
 ```sh
-cd build && chmod +x launch-ccda-batch-custom.sh && ./launch-ccda-batch-custom.sh && cd ..
+build/launch-ccda-batch-custom.sh 
 ```
 
 # Deploy to Cloud Composer for scheduled runs
@@ -91,9 +91,7 @@ or use the following command
 gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}|xargs'
 ```
 
-
 * copy ```build\ccda-composer-schedule.py``` to your ```DAG folder```
-* copy ```build\ccda-batch-config-custom.json``` to ```DAG/scripts``` folder
 * copy ```build\launch-ccda-batch-custom.sh``` to ```DAG/scripts``` folder
 
 or use the following commands
@@ -102,7 +100,6 @@ or use the following commands
 
 export DAG_FOLDER=$(gcloud composer environments describe $COMPOSER_ENVIRONMENT | grep dagGcsPrefix | awk -F 'dagGcsPrefix:' '{print $2}'|xargs)
 gsutil cp build/ccda-composer-schedule.py ${DAG_FOLDER}/
-gsutil cp build/ccda-batch-config-custom.json ${DAG_FOLDER}/scripts/
 gsutil cp build/launch-ccda-batch-custom.sh ${DAG_FOLDER}/scripts/
 
 ```
