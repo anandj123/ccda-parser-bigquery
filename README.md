@@ -46,6 +46,10 @@ gcloud auth application-default login
 gcloud config set project <YOUR_PROJECT_NAME>
 ```
 
+For authenticating with a service account See more at 
+[Authenticating as a service account](https://cloud.google.com/docs/authentication/production).
+
+
 ### Setup environment variables for the application
 
 The following environment variables are required for the application.
